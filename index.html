@@ -15,6 +15,36 @@
 
   <!-- Compiled Tailwind CSS (source: src/input.css → npm run build) -->
   <link rel="stylesheet" href="assets/css/style.css" />
+  <!-- Feature popup: sized to fit the screen without scrolling -->
+  <style>
+    /* phones & tablets: stacked; the image shrinks to the space left */
+    @media (max-width: 1023.98px) {
+      .tp-modal-body { display: flex; flex-direction: column; max-height: calc(100dvh - 34px); }
+      .tp-modal-copy { flex: none; }
+      .tp-modal-media { flex: 1 1 auto; min-height: 140px; margin-top: clamp(20px, 4vh, 40px); }
+      .tp-modal-img { max-height: 100%; }
+    }
+    /* short phone screens: a little less padding and spacing */
+    @media (max-width: 1023.98px) and (max-height: 700px) {
+      .tp-modal-body { padding: 20px; }
+      .tp-modal-copy .mt-5 { margin-top: 12px; }
+      .tp-modal-copy .mt-8 { margin-top: 16px; }
+      .tp-modal-media { min-height: 110px; margin-top: 16px; padding: 12px; }
+    }
+    /* desktop: wider popup, text left – image right */
+    @media (min-width: 1024px) {
+      .tp-modal { width: min(1240px, calc(100% - 48px)); }
+      .tp-modal-body {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+        align-items: center;
+        gap: clamp(28px, 3vw, 48px);
+        padding-top: clamp(64px, 5vw, 80px);
+      }
+      .tp-modal-media { margin-top: 0; }
+      .tp-modal-img { max-height: min(60vh, calc(100dvh - 260px)); }
+    }
+  </style>
 </head>
 
 <body class="bg-night font-sans text-white antialiased selection:bg-[#6FF0AD] selection:text-ink">
@@ -151,10 +181,10 @@
 
           <!-- Tabs (replace each data-tp-image with its own screenshot) -->
           <div data-tp-reveal="up" role="tablist" aria-label="Customization features" class="mt-8 flex flex-wrap gap-3 delay-[400ms] lg:mt-10 2xl:gap-4">
-            <button type="button" role="tab" data-tp-tab aria-selected="true" aria-controls="tp-custom-preview" data-tp-image="assets/images/live-editor.png" data-tp-alt="TEMPLETO live theme editor" class="tp-tab tp-btn-text is-active">Live Editor</button>
-            <button type="button" role="tab" data-tp-tab aria-selected="false" tabindex="-1" aria-controls="tp-custom-preview" data-tp-image="assets/images/live-editor.png" data-tp-alt="TEMPLETO various sections" class="tp-tab tp-btn-text">Various Sections</button>
-            <button type="button" role="tab" data-tp-tab aria-selected="false" tabindex="-1" aria-controls="tp-custom-preview" data-tp-image="assets/images/live-editor.png" data-tp-alt="TEMPLETO mega menu" class="tp-tab tp-btn-text">Mega Menu</button>
-            <button type="button" role="tab" data-tp-tab aria-selected="false" tabindex="-1" aria-controls="tp-custom-preview" data-tp-image="assets/images/live-editor.png" data-tp-alt="TEMPLETO header group" class="tp-tab tp-btn-text">Header Group</button>
+            <button type="button" role="tab" data-tp-tab aria-selected="true" aria-controls="tp-custom-preview" data-tp-image="assets/images/live-editor.webp" data-tp-alt="TEMPLETO live theme editor" class="tp-tab tp-btn-text is-active">Live Editor</button>
+            <button type="button" role="tab" data-tp-tab aria-selected="false" tabindex="-1" aria-controls="tp-custom-preview" data-tp-image="assets/images/customize/various-sections.webp" data-tp-alt="TEMPLETO various sections" class="tp-tab tp-btn-text">Various Sections</button>
+            <button type="button" role="tab" data-tp-tab aria-selected="false" tabindex="-1" aria-controls="tp-custom-preview" data-tp-image="assets/images/customize/mega-menu.webp" data-tp-alt="TEMPLETO mega menu" class="tp-tab tp-btn-text">Mega Menu</button>
+            <button type="button" role="tab" data-tp-tab aria-selected="false" tabindex="-1" aria-controls="tp-custom-preview" data-tp-image="assets/images/customize/header-group.webp" data-tp-alt="TEMPLETO header group" class="tp-tab tp-btn-text">Header Group</button>
           </div>
         </div>
 
@@ -162,7 +192,7 @@
         <div data-tp-reveal="right" class="relative delay-200">
           <div class="pointer-events-none absolute -inset-8 rounded-full bg-lime/10 blur-3xl" aria-hidden="true"></div>
           <div id="tp-custom-preview" role="tabpanel" class="relative overflow-hidden rounded-[6px] bg-white shadow-[0_40px_100px_-30px_rgba(0,0,0,.8)] ring-1 ring-white/10">
-            <img data-tp-tab-image src="assets/images/live-editor.png" width="895" height="430" alt="TEMPLETO live theme editor" loading="lazy" class="tp-preview-img block h-auto w-full" />
+            <img data-tp-tab-image src="assets/images/live-editor.webp" width="895" height="430" alt="TEMPLETO live theme editor" loading="lazy" class="tp-preview-img block h-auto w-full" />
           </div>
         </div>
       </div>
@@ -184,236 +214,794 @@
         <!-- Category filter -->
         <div data-tp-reveal="up" class="mt-10 delay-300 lg:mt-14">
           <div role="toolbar" aria-label="Filter demos by category" class="tp-filter-bar relative flex items-center gap-1 rounded-full border border-white/15 p-1.5 sm:p-2 xl:justify-between xl:px-5 xl:py-3">
-              <button type="button" data-tp-filter="all" aria-pressed="true" class="tp-filter tp-meta is-active">All</button>
-              <button type="button" data-tp-filter="fashion" aria-pressed="false" class="tp-filter tp-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3.5 4 6l1.5 4.5L7.5 10v10.5h9V10l2 .5L20 6l-5-2.5a3 3 0 0 1-6 0Z"/></svg>Fashion</button>
-              <button type="button" data-tp-filter="footwear" aria-pressed="false" class="tp-filter tp-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17.5V7.5l4 1 1.5 3.5c3 1.5 7 1.5 10 2.5a2.5 2.5 0 0 1 2.5 2.5v.5H3Z"/><path d="M3 20.5h18"/></svg>Footwear</button>
-              <button type="button" data-tp-filter="bags" aria-pressed="false" class="tp-filter tp-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8.5h14l-1 12H6l-1-12Z"/><path d="M9 8.5V7a3 3 0 0 1 6 0v1.5"/></svg>Bags &amp; Accessories</button>
-              <button type="button" data-tp-filter="beauty" aria-pressed="false" class="tp-filter tp-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.6 4.4L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.6L12 3Z"/><path d="M18.5 15l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7.7-1.8Z"/></svg>Beauty &amp; Personal Care</button>
-              <button type="button" data-tp-filter="health" aria-pressed="false" class="tp-filter tp-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 9.2a4.7 4.7 0 0 0-8.5-2.8 4.7 4.7 0 0 0-8.5 2.8c0 5.2 8.5 10.3 8.5 10.3s8.5-5.1 8.5-10.3Z"/><path d="M6 12h3l1.5-2.5 2.5 5 1.5-2.5H18"/></svg>Health &amp; Fitness</button>
-              <button type="button" data-tp-filter="home" aria-pressed="false" class="tp-filter tp-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 11V8.5A2.5 2.5 0 0 1 7.5 6h9A2.5 2.5 0 0 1 19 8.5V11"/><path d="M3 13.5a2 2 0 0 1 4 0V15h10v-1.5a2 2 0 0 1 4 0V18H3v-4.5Z"/><path d="M5 18v2M19 18v2"/></svg>Home Furnishings</button>
+              <button type="button" data-tp-filter="fashion" aria-pressed="true" class="tp-filter tp-meta is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3.5 4 6l1.5 4.5L7.5 10v10.5h9V10l2 .5L20 6l-5-2.5a3 3 0 0 1-6 0Z"/></svg>Fashion</button>
+              <button type="button" data-tp-filter="accessories" aria-pressed="false" class="tp-filter tp-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8.5h14l-1 12H6l-1-12Z"/><path d="M9 8.5V7a3 3 0 0 1 6 0v1.5"/></svg>Accessories</button>
               <button type="button" data-tp-filter="electronics" aria-pressed="false" class="tp-filter tp-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15v-3a8 8 0 0 1 16 0v3"/><path d="M4 15a2 2 0 0 1 2-2h1v7H6a2 2 0 0 1-2-2v-3ZM20 15a2 2 0 0 0-2-2h-1v7h1a2 2 0 0 0 2-2v-3Z"/></svg>Electronics</button>
+              <button type="button" data-tp-filter="outdoor" aria-pressed="false" class="tp-filter tp-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 19 9.5 8l3.5 6 2.5-4L21 19Z"/><path d="m8 10.5 1.5 1 1.5-1"/></svg>Outdoor</button>
+              <button type="button" data-tp-filter="food" aria-pressed="false" class="tp-filter tp-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7.5c-1.6-1.1-4.6-1.2-6.1 1.3-1.6 2.8-.4 7.3 2.1 9.7 1.2 1.2 2.6 1.3 4 .5 1.4.8 2.8.7 4-.5 2.5-2.4 3.7-6.9 2.1-9.7-1.5-2.5-4.5-2.4-6.1-1.3Z"/><path d="M12 7.5c0-2 .9-3.4 2.5-4"/></svg>Food</button>
+              <button type="button" data-tp-filter="home" aria-pressed="false" class="tp-filter tp-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 11V8.5A2.5 2.5 0 0 1 7.5 6h9A2.5 2.5 0 0 1 19 8.5V11"/><path d="M3 13.5a2 2 0 0 1 4 0V15h10v-1.5a2 2 0 0 1 4 0V18H3v-4.5Z"/><path d="M5 18v2M19 18v2"/></svg>Home</button>
+              <button type="button" data-tp-filter="beauty" aria-pressed="false" class="tp-filter tp-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.6 4.4L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.6L12 3Z"/><path d="M18.5 15l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7.7-1.8Z"/></svg>Beauty</button>
           </div>
         </div>
 
         <!-- Demo grid -->
         <ul class="mt-10 grid grid-cols-1 gap-x-[clamp(16px,2.8vw,54px)] gap-y-12 min-[480px]:grid-cols-2 lg:mt-14 lg:grid-cols-3 xl:grid-cols-4 xl:gap-y-14">
             <li data-tp-item data-tp-cats="fashion" data-tp-reveal="up">
-              <a href="#" class="tp-demo" aria-label="View Demo 1 – Home Casual Wear 1">
+              <a href="https://templeto-fashion-demo.myshopify.com/?preview_theme_id=159034376246" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Sidestreet demo (opens in a new tab)">
                 <div class="tp-demo-frame">
-                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/demo-01.jpg" width="370" height="550" loading="lazy" alt="Demo 1 – Home Casual Wear 1 storefront preview" class="tp-demo-img block h-auto w-full" /></div>
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/fashion/sidestreet-900.webp" srcset="assets/images/demos/fashion/sidestreet-480.webp 480w, assets/images/demos/fashion/sidestreet-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Sidestreet demo store" class="tp-demo-img block h-auto w-full" /></div>
                   <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
                 </div>
                 <div class="mt-4 flex items-start justify-between gap-3">
                   <div>
-                    <p class="tp-card-title text-white">Demo 1</p>
-                    <p class="tp-meta mt-1 text-white/60">Home Casual Wear 1</p>
+                    <p class="tp-card-title text-white">Sidestreet</p>
+                    <p class="tp-meta mt-1 text-white/60">Fashion</p>
                   </div>
-                  <span class="tp-meta shrink-0 rounded-full bg-badge-gradient px-3 py-1 font-medium text-ink">New</span>
+                  <span class="tp-meta shrink-0 rounded-full bg-badge-gradient px-3 py-1 font-medium text-ink">Featured</span>
                 </div>
               </a>
             </li>
             <li data-tp-item data-tp-cats="fashion" data-tp-reveal="up" class="delay-100">
-              <a href="#" class="tp-demo" aria-label="View Demo 2 – Home Casual Wear 2">
+              <a href="https://templeto-fashion-demo.myshopify.com/?preview_theme_id=159074091062" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Marée demo (opens in a new tab)">
                 <div class="tp-demo-frame">
-                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/demo-02.jpg" width="370" height="550" loading="lazy" alt="Demo 2 – Home Casual Wear 2 storefront preview" class="tp-demo-img block h-auto w-full" /></div>
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/fashion/maree-900.webp" srcset="assets/images/demos/fashion/maree-480.webp 480w, assets/images/demos/fashion/maree-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Marée demo store" class="tp-demo-img block h-auto w-full" /></div>
                   <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
                 </div>
                 <div class="mt-4 flex items-start justify-between gap-3">
                   <div>
-                    <p class="tp-card-title text-white">Demo 2</p>
-                    <p class="tp-meta mt-1 text-white/60">Home Casual Wear 2</p>
+                    <p class="tp-card-title text-white">Marée</p>
+                    <p class="tp-meta mt-1 text-white/60">Fashion</p>
                   </div>
+                  <span class="tp-meta shrink-0 rounded-full bg-badge-gradient px-3 py-1 font-medium text-ink">Featured</span>
                 </div>
               </a>
             </li>
-            <li data-tp-item data-tp-cats="bags" data-tp-reveal="up" class="delay-200">
-              <a href="#" class="tp-demo" aria-label="View Demo 3 – Home Frames &amp; Lens">
+            <li data-tp-item data-tp-cats="fashion" data-tp-reveal="up" class="delay-200">
+              <a href="https://templeto-fashion-demo.myshopify.com/?preview_theme_id=158963859510" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Noctis Atelier demo (opens in a new tab)">
                 <div class="tp-demo-frame">
-                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/demo-03.jpg" width="370" height="550" loading="lazy" alt="Demo 3 – Home Frames &amp; Lens storefront preview" class="tp-demo-img block h-auto w-full" /></div>
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/fashion/noctis-atelier-900.webp" srcset="assets/images/demos/fashion/noctis-atelier-480.webp 480w, assets/images/demos/fashion/noctis-atelier-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Noctis Atelier demo store" class="tp-demo-img block h-auto w-full" /></div>
                   <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
                 </div>
                 <div class="mt-4 flex items-start justify-between gap-3">
                   <div>
-                    <p class="tp-card-title text-white">Demo 3</p>
-                    <p class="tp-meta mt-1 text-white/60">Home Frames &amp; Lens</p>
+                    <p class="tp-card-title text-white">Noctis Atelier</p>
+                    <p class="tp-meta mt-1 text-white/60">Fashion</p>
                   </div>
-                  <span class="tp-meta shrink-0 rounded-full bg-badge-gradient px-3 py-1 font-medium text-ink">New</span>
-                </div>
-              </a>
-            </li>
-            <li data-tp-item data-tp-cats="home" data-tp-reveal="up" class="delay-300">
-              <a href="#" class="tp-demo" aria-label="View Demo 4 – Home Furniture &amp; Decor">
-                <div class="tp-demo-frame">
-                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/demo-04.jpg" width="370" height="550" loading="lazy" alt="Demo 4 – Home Furniture &amp; Decor storefront preview" class="tp-demo-img block h-auto w-full" /></div>
-                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
-                </div>
-                <div class="mt-4 flex items-start justify-between gap-3">
-                  <div>
-                    <p class="tp-card-title text-white">Demo 4</p>
-                    <p class="tp-meta mt-1 text-white/60">Home Furniture &amp; Decor</p>
-                  </div>
-                  <span class="tp-meta shrink-0 rounded-full bg-badge-gradient px-3 py-1 font-medium text-ink">New</span>
-                </div>
-              </a>
-            </li>
-            <li data-tp-item data-tp-cats="fashion" data-tp-reveal="up">
-              <a href="#" class="tp-demo" aria-label="View Demo 5 – Home Casual Wear 3">
-                <div class="tp-demo-frame">
-                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/demo-05.jpg" width="370" height="550" loading="lazy" alt="Demo 5 – Home Casual Wear 3 storefront preview" class="tp-demo-img block h-auto w-full" /></div>
-                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
-                </div>
-                <div class="mt-4 flex items-start justify-between gap-3">
-                  <div>
-                    <p class="tp-card-title text-white">Demo 5</p>
-                    <p class="tp-meta mt-1 text-white/60">Home Casual Wear 3</p>
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li data-tp-item data-tp-cats="fashion" data-tp-reveal="up" class="delay-100">
-              <a href="#" class="tp-demo" aria-label="View Demo 6 – Home Casual Wear 4">
-                <div class="tp-demo-frame">
-                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/demo-06.jpg" width="370" height="550" loading="lazy" alt="Demo 6 – Home Casual Wear 4 storefront preview" class="tp-demo-img block h-auto w-full" /></div>
-                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
-                </div>
-                <div class="mt-4 flex items-start justify-between gap-3">
-                  <div>
-                    <p class="tp-card-title text-white">Demo 6</p>
-                    <p class="tp-meta mt-1 text-white/60">Home Casual Wear 4</p>
-                  </div>
-                  <span class="tp-meta shrink-0 rounded-full bg-badge-gradient px-3 py-1 font-medium text-ink">New</span>
-                </div>
-              </a>
-            </li>
-            <li data-tp-item data-tp-cats="electronics" data-tp-reveal="up" class="delay-200">
-              <a href="#" class="tp-demo" aria-label="View Demo 7 – Home Earphones &amp; Earbuds">
-                <div class="tp-demo-frame">
-                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/demo-07.jpg" width="370" height="550" loading="lazy" alt="Demo 7 – Home Earphones &amp; Earbuds storefront preview" class="tp-demo-img block h-auto w-full" /></div>
-                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
-                </div>
-                <div class="mt-4 flex items-start justify-between gap-3">
-                  <div>
-                    <p class="tp-card-title text-white">Demo 7</p>
-                    <p class="tp-meta mt-1 text-white/60">Home Earphones &amp; Earbuds</p>
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li data-tp-item data-tp-cats="electronics health" data-tp-reveal="up" class="delay-300">
-              <a href="#" class="tp-demo" aria-label="View Demo 8 – Home Smart Watches">
-                <div class="tp-demo-frame">
-                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/demo-08.jpg" width="370" height="550" loading="lazy" alt="Demo 8 – Home Smart Watches storefront preview" class="tp-demo-img block h-auto w-full" /></div>
-                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
-                </div>
-                <div class="mt-4 flex items-start justify-between gap-3">
-                  <div>
-                    <p class="tp-card-title text-white">Demo 8</p>
-                    <p class="tp-meta mt-1 text-white/60">Home Smart Watches</p>
-                  </div>
-                  <span class="tp-meta shrink-0 rounded-full bg-badge-gradient px-3 py-1 font-medium text-ink">New</span>
-                </div>
-              </a>
-            </li>
-            <li data-tp-item data-tp-cats="" data-tp-reveal="up">
-              <a href="#" class="tp-demo" aria-label="View Demo 9 – Home Drink &amp; Coffee">
-                <div class="tp-demo-frame">
-                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/demo-09.jpg" width="370" height="550" loading="lazy" alt="Demo 9 – Home Drink &amp; Coffee storefront preview" class="tp-demo-img block h-auto w-full" /></div>
-                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
-                </div>
-                <div class="mt-4 flex items-start justify-between gap-3">
-                  <div>
-                    <p class="tp-card-title text-white">Demo 9</p>
-                    <p class="tp-meta mt-1 text-white/60">Home Drink &amp; Coffee</p>
-                  </div>
-                  <span class="tp-meta shrink-0 rounded-full bg-badge-gradient px-3 py-1 font-medium text-ink">New</span>
-                </div>
-              </a>
-            </li>
-            <li data-tp-item data-tp-cats="footwear" data-tp-reveal="up" class="delay-100">
-              <a href="#" class="tp-demo" aria-label="View Demo 10 – Home Shoe &amp; Sneakers">
-                <div class="tp-demo-frame">
-                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/demo-10.jpg" width="370" height="550" loading="lazy" alt="Demo 10 – Home Shoe &amp; Sneakers storefront preview" class="tp-demo-img block h-auto w-full" /></div>
-                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
-                </div>
-                <div class="mt-4 flex items-start justify-between gap-3">
-                  <div>
-                    <p class="tp-card-title text-white">Demo 10</p>
-                    <p class="tp-meta mt-1 text-white/60">Home Shoe &amp; Sneakers</p>
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li data-tp-item data-tp-cats="bags" data-tp-reveal="up" class="delay-200">
-              <a href="#" class="tp-demo" aria-label="View Demo 11 – Home Traveling &amp; Suitcases">
-                <div class="tp-demo-frame">
-                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/demo-11.jpg" width="370" height="550" loading="lazy" alt="Demo 11 – Home Traveling &amp; Suitcases storefront preview" class="tp-demo-img block h-auto w-full" /></div>
-                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
-                </div>
-                <div class="mt-4 flex items-start justify-between gap-3">
-                  <div>
-                    <p class="tp-card-title text-white">Demo 11</p>
-                    <p class="tp-meta mt-1 text-white/60">Home Traveling &amp; Suitcases</p>
-                  </div>
-                  <span class="tp-meta shrink-0 rounded-full bg-badge-gradient px-3 py-1 font-medium text-ink">New</span>
+                  <span class="tp-meta shrink-0 rounded-full bg-badge-gradient px-3 py-1 font-medium text-ink">Featured</span>
                 </div>
               </a>
             </li>
             <li data-tp-item data-tp-cats="fashion" data-tp-reveal="up" class="delay-300">
-              <a href="#" class="tp-demo" aria-label="View Demo 12 – Home Casual Wear 5">
+              <a href="https://templeto-fashion-demo.myshopify.com/?preview_theme_id=159036538934" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Serein demo (opens in a new tab)">
                 <div class="tp-demo-frame">
-                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/demo-12.jpg" width="370" height="550" loading="lazy" alt="Demo 12 – Home Casual Wear 5 storefront preview" class="tp-demo-img block h-auto w-full" /></div>
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/fashion/serein-900.webp" srcset="assets/images/demos/fashion/serein-480.webp 480w, assets/images/demos/fashion/serein-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Serein demo store" class="tp-demo-img block h-auto w-full" /></div>
                   <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
                 </div>
                 <div class="mt-4 flex items-start justify-between gap-3">
                   <div>
-                    <p class="tp-card-title text-white">Demo 12</p>
-                    <p class="tp-meta mt-1 text-white/60">Home Casual Wear 5</p>
+                    <p class="tp-card-title text-white">Serein</p>
+                    <p class="tp-meta mt-1 text-white/60">Fashion</p>
                   </div>
                 </div>
               </a>
             </li>
-            <li data-tp-item data-tp-cats="beauty" data-tp-reveal="up">
-              <a href="#" class="tp-demo" aria-label="View Demo 13 – Home Beauty &amp; Skincare 1">
+            <li data-tp-item data-tp-cats="fashion" data-tp-reveal="up">
+              <a href="https://templeto-fashion-demo.myshopify.com/?preview_theme_id=158898061366" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Everly Studio demo (opens in a new tab)">
                 <div class="tp-demo-frame">
-                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/demo-13.jpg" width="370" height="550" loading="lazy" alt="Demo 13 – Home Beauty &amp; Skincare 1 storefront preview" class="tp-demo-img block h-auto w-full" /></div>
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/fashion/everly-studio-900.webp" srcset="assets/images/demos/fashion/everly-studio-480.webp 480w, assets/images/demos/fashion/everly-studio-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Everly Studio demo store" class="tp-demo-img block h-auto w-full" /></div>
                   <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
                 </div>
                 <div class="mt-4 flex items-start justify-between gap-3">
                   <div>
-                    <p class="tp-card-title text-white">Demo 13</p>
-                    <p class="tp-meta mt-1 text-white/60">Home Beauty &amp; Skincare 1</p>
+                    <p class="tp-card-title text-white">Everly Studio</p>
+                    <p class="tp-meta mt-1 text-white/60">Fashion</p>
                   </div>
                 </div>
               </a>
             </li>
-            <li data-tp-item data-tp-cats="beauty" data-tp-reveal="up" class="delay-100">
-              <a href="#" class="tp-demo" aria-label="View Demo 14 – Home Beauty &amp; Skincare 2">
+            <li data-tp-item data-tp-cats="fashion" data-tp-reveal="up" class="delay-100">
+              <a href="https://templeto-fashion-demo.myshopify.com/?preview_theme_id=159075926070" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Ivelle demo (opens in a new tab)">
                 <div class="tp-demo-frame">
-                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/demo-14.jpg" width="370" height="550" loading="lazy" alt="Demo 14 – Home Beauty &amp; Skincare 2 storefront preview" class="tp-demo-img block h-auto w-full" /></div>
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/fashion/ivelle-900.webp" srcset="assets/images/demos/fashion/ivelle-480.webp 480w, assets/images/demos/fashion/ivelle-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Ivelle demo store" class="tp-demo-img block h-auto w-full" /></div>
                   <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
                 </div>
                 <div class="mt-4 flex items-start justify-between gap-3">
                   <div>
-                    <p class="tp-card-title text-white">Demo 14</p>
-                    <p class="tp-meta mt-1 text-white/60">Home Beauty &amp; Skincare 2</p>
+                    <p class="tp-card-title text-white">Ivelle</p>
+                    <p class="tp-meta mt-1 text-white/60">Fashion</p>
                   </div>
-                  <span class="tp-meta shrink-0 rounded-full bg-badge-gradient px-3 py-1 font-medium text-ink">New</span>
                 </div>
               </a>
             </li>
-            <li data-tp-item data-tp-cats="beauty" data-tp-reveal="up" class="delay-200">
-              <div class="tp-demo is-soon" aria-label="Demo 15 – Home Beauty &amp; Skincare 3, coming soon">
+            <li data-tp-item data-tp-cats="fashion" data-tp-reveal="up" class="delay-200">
+              <a href="https://templeto-fashion-demo.myshopify.com/?preview_theme_id=159329484854" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Tumblewren demo (opens in a new tab)">
                 <div class="tp-demo-frame">
-                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/demo-15.jpg" width="370" height="550" loading="lazy" alt="Demo 15 – Home Beauty &amp; Skincare 3 storefront preview" class="tp-demo-img block h-auto w-full" /></div>
-                  <span class="absolute inset-0 grid place-items-center text-center">
-                    <span class="text-heading-gradient text-[clamp(30px,3vw,56px)] font-extrabold uppercase leading-[1.05] tracking-[-0.01em]">Coming<br />Soon</span>
-                  </span>
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/fashion/tumblewren-900.webp" srcset="assets/images/demos/fashion/tumblewren-480.webp 480w, assets/images/demos/fashion/tumblewren-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Tumblewren demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
                 </div>
-                <div class="mt-4">
-                  <p class="tp-card-title text-white">Demo 15</p>
-                  <p class="tp-meta mt-1 text-white/60">Home Beauty &amp; Skincare 3</p>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Tumblewren</p>
+                    <p class="tp-meta mt-1 text-white/60">Fashion</p>
+                  </div>
                 </div>
-              </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="fashion" data-tp-reveal="up" class="delay-300">
+              <a href="https://templeto-fashion-demo.myshopify.com/?preview_theme_id=159078023222" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Aurel demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/fashion/aurel-900.webp" srcset="assets/images/demos/fashion/aurel-480.webp 480w, assets/images/demos/fashion/aurel-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Aurel demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Aurel</p>
+                    <p class="tp-meta mt-1 text-white/60">Fashion</p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="fashion" data-tp-reveal="up">
+              <a href="https://templeto-fashion-demo.myshopify.com/?preview_theme_id=158983749686" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Aster Linen demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/fashion/aster-linen-900.webp" srcset="assets/images/demos/fashion/aster-linen-480.webp 480w, assets/images/demos/fashion/aster-linen-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Aster Linen demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Aster Linen</p>
+                    <p class="tp-meta mt-1 text-white/60">Fashion</p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="fashion" data-tp-reveal="up" class="delay-100">
+              <a href="https://templeto-fashion-demo.myshopify.com/?preview_theme_id=158985453622" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Ridgeway Supply demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/fashion/ridgeway-supply-900.webp" srcset="assets/images/demos/fashion/ridgeway-supply-480.webp 480w, assets/images/demos/fashion/ridgeway-supply-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Ridgeway Supply demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Ridgeway Supply</p>
+                    <p class="tp-meta mt-1 text-white/60">Fashion</p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="fashion" data-tp-reveal="up" class="delay-200">
+              <a href="https://templeto-fashion-demo.myshopify.com/?preview_theme_id=158984339510" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Northline demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/fashion/northline-900.webp" srcset="assets/images/demos/fashion/northline-480.webp 480w, assets/images/demos/fashion/northline-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Northline demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Northline</p>
+                    <p class="tp-meta mt-1 text-white/60">Fashion</p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="fashion" data-tp-reveal="up" class="delay-300">
+              <a href="https://templeto-fashion-demo.myshopify.com/?preview_theme_id=159035424822" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Fieldline demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/fashion/fieldline-900.webp" srcset="assets/images/demos/fashion/fieldline-480.webp 480w, assets/images/demos/fashion/fieldline-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Fieldline demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Fieldline</p>
+                    <p class="tp-meta mt-1 text-white/60">Fashion</p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="accessories" data-tp-reveal="up" hidden>
+              <a href="https://templeto-accessories-demo.myshopify.com/?preview_theme_id=132036984914" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Valen demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/accessories/valen-900.webp" srcset="assets/images/demos/accessories/valen-480.webp 480w, assets/images/demos/accessories/valen-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Valen demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Valen</p>
+                    <p class="tp-meta mt-1 text-white/60">Accessories</p>
+                  </div>
+                  <span class="tp-meta shrink-0 rounded-full bg-badge-gradient px-3 py-1 font-medium text-ink">Featured</span>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="accessories" data-tp-reveal="up" class="delay-100" hidden>
+              <a href="https://templeto-accessories-demo.myshopify.com/?preview_theme_id=132037115986" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Nomaro demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/accessories/nomaro-900.webp" srcset="assets/images/demos/accessories/nomaro-480.webp 480w, assets/images/demos/accessories/nomaro-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Nomaro demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Nomaro</p>
+                    <p class="tp-meta mt-1 text-white/60">Accessories</p>
+                  </div>
+                  <span class="tp-meta shrink-0 rounded-full bg-badge-gradient px-3 py-1 font-medium text-ink">Featured</span>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="accessories" data-tp-reveal="up" class="delay-200" hidden>
+              <a href="https://templeto-accessories-demo.myshopify.com/?preview_theme_id=132036526162" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Ondelle demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/accessories/ondelle-900.webp" srcset="assets/images/demos/accessories/ondelle-480.webp 480w, assets/images/demos/accessories/ondelle-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Ondelle demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Ondelle</p>
+                    <p class="tp-meta mt-1 text-white/60">Accessories</p>
+                  </div>
+                  <span class="tp-meta shrink-0 rounded-full bg-badge-gradient px-3 py-1 font-medium text-ink">Featured</span>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="accessories" data-tp-reveal="up" class="delay-300" hidden>
+              <a href="https://templeto-accessories-demo.myshopify.com/?preview_theme_id=132036264018" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Vauxlin demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/accessories/vauxlin-900.webp" srcset="assets/images/demos/accessories/vauxlin-480.webp 480w, assets/images/demos/accessories/vauxlin-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Vauxlin demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Vauxlin</p>
+                    <p class="tp-meta mt-1 text-white/60">Accessories</p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="accessories" data-tp-reveal="up" hidden>
+              <a href="https://templeto-accessories-demo.myshopify.com/?preview_theme_id=132041572434" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Volta demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/accessories/volta-900.webp" srcset="assets/images/demos/accessories/volta-480.webp 480w, assets/images/demos/accessories/volta-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Volta demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Volta</p>
+                    <p class="tp-meta mt-1 text-white/60">Accessories</p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="accessories" data-tp-reveal="up" class="delay-100" hidden>
+              <a href="https://templeto-accessories-demo.myshopify.com/?preview_theme_id=132041408594" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Ardesa demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/accessories/ardesa-900.webp" srcset="assets/images/demos/accessories/ardesa-480.webp 480w, assets/images/demos/accessories/ardesa-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Ardesa demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Ardesa</p>
+                    <p class="tp-meta mt-1 text-white/60">Accessories</p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="accessories" data-tp-reveal="up" class="delay-200" hidden>
+              <a href="https://templeto-accessories-demo.myshopify.com/?preview_theme_id=132036722770" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Kairon demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/accessories/kairon-900.webp" srcset="assets/images/demos/accessories/kairon-480.webp 480w, assets/images/demos/accessories/kairon-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Kairon demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Kairon</p>
+                    <p class="tp-meta mt-1 text-white/60">Accessories</p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="electronics" data-tp-reveal="up" hidden>
+              <a href="https://templeto-electronics-demo.myshopify.com/?preview_theme_id=201345171616" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Korvax demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/electronics/korvax-900.webp" srcset="assets/images/demos/electronics/korvax-480.webp 480w, assets/images/demos/electronics/korvax-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Korvax demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Korvax</p>
+                    <p class="tp-meta mt-1 text-white/60">Electronics</p>
+                  </div>
+                  <span class="tp-meta shrink-0 rounded-full bg-badge-gradient px-3 py-1 font-medium text-ink">Featured</span>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="electronics" data-tp-reveal="up" class="delay-100" hidden>
+              <a href="https://templeto-electronics-demo.myshopify.com/?preview_theme_id=201351889056" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Zephra demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/electronics/zephra-900.webp" srcset="assets/images/demos/electronics/zephra-480.webp 480w, assets/images/demos/electronics/zephra-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Zephra demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Zephra</p>
+                    <p class="tp-meta mt-1 text-white/60">Electronics</p>
+                  </div>
+                  <span class="tp-meta shrink-0 rounded-full bg-badge-gradient px-3 py-1 font-medium text-ink">Featured</span>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="electronics" data-tp-reveal="up" class="delay-200" hidden>
+              <a href="https://templeto-electronics-demo.myshopify.com/?preview_theme_id=201361784992" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Kivo demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/electronics/kivo-900.webp" srcset="assets/images/demos/electronics/kivo-480.webp 480w, assets/images/demos/electronics/kivo-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Kivo demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Kivo</p>
+                    <p class="tp-meta mt-1 text-white/60">Electronics</p>
+                  </div>
+                  <span class="tp-meta shrink-0 rounded-full bg-badge-gradient px-3 py-1 font-medium text-ink">Featured</span>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="electronics" data-tp-reveal="up" class="delay-300" hidden>
+              <a href="https://templeto-electronics-demo.myshopify.com/?preview_theme_id=201346416800" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Wrenly demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/electronics/wrenly-900.webp" srcset="assets/images/demos/electronics/wrenly-480.webp 480w, assets/images/demos/electronics/wrenly-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Wrenly demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Wrenly</p>
+                    <p class="tp-meta mt-1 text-white/60">Electronics</p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="electronics" data-tp-reveal="up" hidden>
+              <a href="https://templeto-electronics-demo.myshopify.com/?preview_theme_id=201351364768" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Taktil demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/electronics/taktil-900.webp" srcset="assets/images/demos/electronics/taktil-480.webp 480w, assets/images/demos/electronics/taktil-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Taktil demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Taktil</p>
+                    <p class="tp-meta mt-1 text-white/60">Electronics</p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="electronics" data-tp-reveal="up" class="delay-100" hidden>
+              <a href="https://templeto-electronics-demo.myshopify.com/?preview_theme_id=201343991968" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Orrin demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/electronics/orrin-900.webp" srcset="assets/images/demos/electronics/orrin-480.webp 480w, assets/images/demos/electronics/orrin-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Orrin demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Orrin</p>
+                    <p class="tp-meta mt-1 text-white/60">Electronics</p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="electronics" data-tp-reveal="up" class="delay-200" hidden>
+              <a href="https://templeto-electronics-demo.myshopify.com/?preview_theme_id=201361227936" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Nocta demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/electronics/nocta-900.webp" srcset="assets/images/demos/electronics/nocta-480.webp 480w, assets/images/demos/electronics/nocta-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Nocta demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Nocta</p>
+                    <p class="tp-meta mt-1 text-white/60">Electronics</p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="electronics" data-tp-reveal="up" class="delay-300" hidden>
+              <a href="https://templeto-electronics-demo.myshopify.com/?preview_theme_id=201342615712" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Noctra demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/electronics/noctra-900.webp" srcset="assets/images/demos/electronics/noctra-480.webp 480w, assets/images/demos/electronics/noctra-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Noctra demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Noctra</p>
+                    <p class="tp-meta mt-1 text-white/60">Electronics</p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="electronics" data-tp-reveal="up" hidden>
+              <a href="https://templeto-electronics-demo.myshopify.com/?preview_theme_id=201343303840" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Vyrell demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/electronics/vyrell-900.webp" srcset="assets/images/demos/electronics/vyrell-480.webp 480w, assets/images/demos/electronics/vyrell-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Vyrell demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Vyrell</p>
+                    <p class="tp-meta mt-1 text-white/60">Electronics</p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="electronics" data-tp-reveal="up" class="delay-100" hidden>
+              <a href="https://templeto-electronics-demo.myshopify.com/?preview_theme_id=201350086816" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Ohmly demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/electronics/ohmly-900.webp" srcset="assets/images/demos/electronics/ohmly-480.webp 480w, assets/images/demos/electronics/ohmly-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Ohmly demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Ohmly</p>
+                    <p class="tp-meta mt-1 text-white/60">Electronics</p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="electronics" data-tp-reveal="up" class="delay-200" hidden>
+              <a href="https://templeto-electronics-demo.myshopify.com/?preview_theme_id=201352478880" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Movaro demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/electronics/movaro-900.webp" srcset="assets/images/demos/electronics/movaro-480.webp 480w, assets/images/demos/electronics/movaro-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Movaro demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Movaro</p>
+                    <p class="tp-meta mt-1 text-white/60">Electronics</p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="outdoor" data-tp-reveal="up" hidden>
+              <a href="https://templeto-outdoor-demo.myshopify.com/?preview_theme_id=189961797884" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Nordkamm demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/outdoor/nordkamm-900.webp" srcset="assets/images/demos/outdoor/nordkamm-480.webp 480w, assets/images/demos/outdoor/nordkamm-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Nordkamm demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Nordkamm</p>
+                    <p class="tp-meta mt-1 text-white/60">Outdoor</p>
+                  </div>
+                  <span class="tp-meta shrink-0 rounded-full bg-badge-gradient px-3 py-1 font-medium text-ink">Featured</span>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="outdoor" data-tp-reveal="up" class="delay-100" hidden>
+              <a href="https://templeto-outdoor-demo.myshopify.com/?preview_theme_id=189961240828" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Altvik demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/outdoor/altvik-900.webp" srcset="assets/images/demos/outdoor/altvik-480.webp 480w, assets/images/demos/outdoor/altvik-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Altvik demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Altvik</p>
+                    <p class="tp-meta mt-1 text-white/60">Outdoor</p>
+                  </div>
+                  <span class="tp-meta shrink-0 rounded-full bg-badge-gradient px-3 py-1 font-medium text-ink">Featured</span>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="outdoor" data-tp-reveal="up" class="delay-200" hidden>
+              <a href="https://templeto-outdoor-demo.myshopify.com/?preview_theme_id=189961994492" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Lagune demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/outdoor/lagune-900.webp" srcset="assets/images/demos/outdoor/lagune-480.webp 480w, assets/images/demos/outdoor/lagune-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Lagune demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Lagune</p>
+                    <p class="tp-meta mt-1 text-white/60">Outdoor</p>
+                  </div>
+                  <span class="tp-meta shrink-0 rounded-full bg-badge-gradient px-3 py-1 font-medium text-ink">Featured</span>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="outdoor" data-tp-reveal="up" class="delay-300" hidden>
+              <a href="https://templeto-outdoor-demo.myshopify.com/?preview_theme_id=189961470204" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Verrak demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/outdoor/verrak-900.webp" srcset="assets/images/demos/outdoor/verrak-480.webp 480w, assets/images/demos/outdoor/verrak-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Verrak demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Verrak</p>
+                    <p class="tp-meta mt-1 text-white/60">Outdoor</p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="outdoor" data-tp-reveal="up" hidden>
+              <a href="https://templeto-outdoor-demo.myshopify.com/?preview_theme_id=189961175292" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Fernholt demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/outdoor/fernholt-900.webp" srcset="assets/images/demos/outdoor/fernholt-480.webp 480w, assets/images/demos/outdoor/fernholt-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Fernholt demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Fernholt</p>
+                    <p class="tp-meta mt-1 text-white/60">Outdoor</p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="outdoor" data-tp-reveal="up" class="delay-100" hidden>
+              <a href="https://templeto-outdoor-demo.myshopify.com/?preview_theme_id=189961666812" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Rivermoor demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/outdoor/rivermoor-900.webp" srcset="assets/images/demos/outdoor/rivermoor-480.webp 480w, assets/images/demos/outdoor/rivermoor-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Rivermoor demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Rivermoor</p>
+                    <p class="tp-meta mt-1 text-white/60">Outdoor</p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="food" data-tp-reveal="up" hidden>
+              <a href="https://templeto-food-demo.myshopify.com/?preview_theme_id=154535002308" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Kestra demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/food/kestra-900.webp" srcset="assets/images/demos/food/kestra-480.webp 480w, assets/images/demos/food/kestra-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Kestra demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Kestra</p>
+                    <p class="tp-meta mt-1 text-white/60">Food</p>
+                  </div>
+                  <span class="tp-meta shrink-0 rounded-full bg-badge-gradient px-3 py-1 font-medium text-ink">Featured</span>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="food" data-tp-reveal="up" class="delay-100" hidden>
+              <a href="https://templeto-food-demo.myshopify.com/?preview_theme_id=154535166148" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Mossgate demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/food/mossgate-900.webp" srcset="assets/images/demos/food/mossgate-480.webp 480w, assets/images/demos/food/mossgate-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Mossgate demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Mossgate</p>
+                    <p class="tp-meta mt-1 text-white/60">Food</p>
+                  </div>
+                  <span class="tp-meta shrink-0 rounded-full bg-badge-gradient px-3 py-1 font-medium text-ink">Featured</span>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="food" data-tp-reveal="up" class="delay-200" hidden>
+              <a href="https://templeto-food-demo.myshopify.com/?preview_theme_id=154534674628" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Crustwell demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/food/crustwell-900.webp" srcset="assets/images/demos/food/crustwell-480.webp 480w, assets/images/demos/food/crustwell-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Crustwell demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Crustwell</p>
+                    <p class="tp-meta mt-1 text-white/60">Food</p>
+                  </div>
+                  <span class="tp-meta shrink-0 rounded-full bg-badge-gradient px-3 py-1 font-medium text-ink">Featured</span>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="food" data-tp-reveal="up" class="delay-300" hidden>
+              <a href="https://templeto-food-demo.myshopify.com/?preview_theme_id=154535428292" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Velmont demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/food/velmont-900.webp" srcset="assets/images/demos/food/velmont-480.webp 480w, assets/images/demos/food/velmont-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Velmont demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Velmont</p>
+                    <p class="tp-meta mt-1 text-white/60">Food</p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="food" data-tp-reveal="up" hidden>
+              <a href="https://templeto-food-demo.myshopify.com/?preview_theme_id=154535788740" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Fieldstone demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/food/fieldstone-900.webp" srcset="assets/images/demos/food/fieldstone-480.webp 480w, assets/images/demos/food/fieldstone-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Fieldstone demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Fieldstone</p>
+                    <p class="tp-meta mt-1 text-white/60">Food</p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="food" data-tp-reveal="up" class="delay-100" hidden>
+              <a href="https://templeto-food-demo.myshopify.com/?preview_theme_id=154535919812" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Fruvelo demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/food/fruvelo-900.webp" srcset="assets/images/demos/food/fruvelo-480.webp 480w, assets/images/demos/food/fruvelo-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Fruvelo demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Fruvelo</p>
+                    <p class="tp-meta mt-1 text-white/60">Food</p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="home" data-tp-reveal="up" hidden>
+              <a href="https://templeto-home-demo.myshopify.com/?preview_theme_id=189961371881" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Glowmere demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/home/glowmere-900.webp" srcset="assets/images/demos/home/glowmere-480.webp 480w, assets/images/demos/home/glowmere-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Glowmere demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Glowmere</p>
+                    <p class="tp-meta mt-1 text-white/60">Home</p>
+                  </div>
+                  <span class="tp-meta shrink-0 rounded-full bg-badge-gradient px-3 py-1 font-medium text-ink">Featured</span>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="home" data-tp-reveal="up" class="delay-100" hidden>
+              <a href="https://templeto-home-demo.myshopify.com/?preview_theme_id=189962649833" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Kilnward demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/home/kilnward-900.webp" srcset="assets/images/demos/home/kilnward-480.webp 480w, assets/images/demos/home/kilnward-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Kilnward demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Kilnward</p>
+                    <p class="tp-meta mt-1 text-white/60">Home</p>
+                  </div>
+                  <span class="tp-meta shrink-0 rounded-full bg-badge-gradient px-3 py-1 font-medium text-ink">Featured</span>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="home" data-tp-reveal="up" class="delay-200" hidden>
+              <a href="https://templeto-home-demo.myshopify.com/?preview_theme_id=189962027241" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Meriwen demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/home/meriwen-900.webp" srcset="assets/images/demos/home/meriwen-480.webp 480w, assets/images/demos/home/meriwen-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Meriwen demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Meriwen</p>
+                    <p class="tp-meta mt-1 text-white/60">Home</p>
+                  </div>
+                  <span class="tp-meta shrink-0 rounded-full bg-badge-gradient px-3 py-1 font-medium text-ink">Featured</span>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="home" data-tp-reveal="up" class="delay-300" hidden>
+              <a href="https://templeto-home-demo.myshopify.com/?preview_theme_id=189956980969" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Norrel demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/home/norrel-900.webp" srcset="assets/images/demos/home/norrel-480.webp 480w, assets/images/demos/home/norrel-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Norrel demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Norrel</p>
+                    <p class="tp-meta mt-1 text-white/60">Home</p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="home" data-tp-reveal="up" hidden>
+              <a href="https://templeto-home-demo.myshopify.com/?preview_theme_id=189962780905" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Lumevale demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/home/lumevale-900.webp" srcset="assets/images/demos/home/lumevale-480.webp 480w, assets/images/demos/home/lumevale-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Lumevale demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Lumevale</p>
+                    <p class="tp-meta mt-1 text-white/60">Home</p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="home" data-tp-reveal="up" class="delay-100" hidden>
+              <a href="https://templeto-home-demo.myshopify.com/?preview_theme_id=189961863401" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Orren demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/home/orren-900.webp" srcset="assets/images/demos/home/orren-480.webp 480w, assets/images/demos/home/orren-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Orren demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Orren</p>
+                    <p class="tp-meta mt-1 text-white/60">Home</p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="beauty" data-tp-reveal="up" hidden>
+              <a href="https://templeto-beauty-demo.myshopify.com/?preview_theme_id=169050505281" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Noctive demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/beauty/noctive-900.webp" srcset="assets/images/demos/beauty/noctive-480.webp 480w, assets/images/demos/beauty/noctive-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Noctive demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Noctive</p>
+                    <p class="tp-meta mt-1 text-white/60">Beauty</p>
+                  </div>
+                  <span class="tp-meta shrink-0 rounded-full bg-badge-gradient px-3 py-1 font-medium text-ink">Featured</span>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="beauty" data-tp-reveal="up" class="delay-100" hidden>
+              <a href="https://templeto-beauty-demo.myshopify.com/?preview_theme_id=169049882689" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Tresswell demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/beauty/tresswell-900.webp" srcset="assets/images/demos/beauty/tresswell-480.webp 480w, assets/images/demos/beauty/tresswell-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Tresswell demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Tresswell</p>
+                    <p class="tp-meta mt-1 text-white/60">Beauty</p>
+                  </div>
+                  <span class="tp-meta shrink-0 rounded-full bg-badge-gradient px-3 py-1 font-medium text-ink">Featured</span>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="beauty" data-tp-reveal="up" class="delay-200" hidden>
+              <a href="https://templeto-beauty-demo.myshopify.com/?preview_theme_id=169049456705" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Kohline demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/beauty/kohline-900.webp" srcset="assets/images/demos/beauty/kohline-480.webp 480w, assets/images/demos/beauty/kohline-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Kohline demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Kohline</p>
+                    <p class="tp-meta mt-1 text-white/60">Beauty</p>
+                  </div>
+                  <span class="tp-meta shrink-0 rounded-full bg-badge-gradient px-3 py-1 font-medium text-ink">Featured</span>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="beauty" data-tp-reveal="up" class="delay-300" hidden>
+              <a href="https://templeto-beauty-demo.myshopify.com/?preview_theme_id=169050964033" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Saltmere demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/beauty/saltmere-900.webp" srcset="assets/images/demos/beauty/saltmere-480.webp 480w, assets/images/demos/beauty/saltmere-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Saltmere demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Saltmere</p>
+                    <p class="tp-meta mt-1 text-white/60">Beauty</p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="beauty" data-tp-reveal="up" hidden>
+              <a href="https://templeto-beauty-demo.myshopify.com/?preview_theme_id=169048965185" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Olumea demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/beauty/olumea-900.webp" srcset="assets/images/demos/beauty/olumea-480.webp 480w, assets/images/demos/beauty/olumea-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Olumea demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Olumea</p>
+                    <p class="tp-meta mt-1 text-white/60">Beauty</p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li data-tp-item data-tp-cats="beauty" data-tp-reveal="up" class="delay-100" hidden>
+              <a href="https://templeto-beauty-demo.myshopify.com/?preview_theme_id=169050832961" target="_blank" rel="noopener" class="tp-demo" aria-label="View the Lacquerie demo (opens in a new tab)">
+                <div class="tp-demo-frame">
+                  <div class="overflow-hidden rounded-[6px]"><img src="assets/images/demos/beauty/lacquerie-900.webp" srcset="assets/images/demos/beauty/lacquerie-480.webp 480w, assets/images/demos/beauty/lacquerie-900.webp 900w" sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 480px) 50vw, 100vw" width="900" height="1298" loading="lazy" decoding="async" alt="Lacquerie demo store" class="tp-demo-img block h-auto w-full" /></div>
+                  <span class="tp-demo-overlay"><span class="tp-btn-text rounded-full bg-btn-gradient px-6 py-3 text-ink">View Demo</span></span>
+                </div>
+                <div class="mt-4 flex items-start justify-between gap-3">
+                  <div>
+                    <p class="tp-card-title text-white">Lacquerie</p>
+                    <p class="tp-meta mt-1 text-white/60">Beauty</p>
+                  </div>
+                </div>
+              </a>
             </li>
         </ul>
 
@@ -791,13 +1379,13 @@
         <!-- Tabs (vertical on desktop, sideways-scrolling on mobile) -->
         <div data-tp-reveal="left" role="tablist" aria-label="Page templates" aria-orientation="vertical" data-tp-autotab-list class="tp-scroll-x relative -mx-5 flex gap-8 px-5 pb-2 sm:-mx-8 sm:px-8 lg:mx-0 lg:flex-col lg:items-start lg:gap-[clamp(12px,1.9vw,38px)] lg:overflow-visible lg:px-0 lg:pb-0">
             <button type="button" role="tab" data-tp-autotab aria-selected="true" aria-controls="tp-pages-panel" data-tp-image="assets/images/pages/product-pages.webp" data-tp-alt="TEMPLETO product pages layouts" class="tp-autotab tp-heading is-active">Product Pages</button>
-            <button type="button" role="tab" data-tp-autotab aria-selected="false" tabindex="-1" aria-controls="tp-pages-panel" data-tp-image="assets/images/pages/product-pages.webp" data-tp-alt="TEMPLETO inner pages layouts" class="tp-autotab tp-heading">Inner Pages</button>
+            <button type="button" role="tab" data-tp-autotab aria-selected="false" tabindex="-1" aria-controls="tp-pages-panel" data-tp-image="assets/images/pages/compare-pages.webp" data-tp-alt="TEMPLETO inner pages layouts" class="tp-autotab tp-heading">Inner Pages</button>
             <button type="button" role="tab" data-tp-autotab aria-selected="false" tabindex="-1" aria-controls="tp-pages-panel" data-tp-image="assets/images/pages/product-pages.webp" data-tp-alt="TEMPLETO portfolio layouts" class="tp-autotab tp-heading">Portfolio</button>
-            <button type="button" role="tab" data-tp-autotab aria-selected="false" tabindex="-1" aria-controls="tp-pages-panel" data-tp-image="assets/images/pages/product-pages.webp" data-tp-alt="TEMPLETO shop pages layouts" class="tp-autotab tp-heading">Shop Pages</button>
-            <button type="button" role="tab" data-tp-autotab aria-selected="false" tabindex="-1" aria-controls="tp-pages-panel" data-tp-image="assets/images/pages/product-pages.webp" data-tp-alt="TEMPLETO blog pages layouts" class="tp-autotab tp-heading">Blog Pages</button>
+            <button type="button" role="tab" data-tp-autotab aria-selected="false" tabindex="-1" aria-controls="tp-pages-panel" data-tp-image="assets/images/pages/shop-pages.webp" data-tp-alt="TEMPLETO shop pages layouts" class="tp-autotab tp-heading">Shop Pages</button>
+            <button type="button" role="tab" data-tp-autotab aria-selected="false" tabindex="-1" aria-controls="tp-pages-panel" data-tp-image="assets/images/pages/blog-pages.webp" data-tp-alt="TEMPLETO blog pages layouts" class="tp-autotab tp-heading">Blog Pages</button>
             <button type="button" role="tab" data-tp-autotab aria-selected="false" tabindex="-1" aria-controls="tp-pages-panel" data-tp-image="assets/images/pages/product-pages.webp" data-tp-alt="TEMPLETO about us layouts" class="tp-autotab tp-heading">About Us</button>
             <button type="button" role="tab" data-tp-autotab aria-selected="false" tabindex="-1" aria-controls="tp-pages-panel" data-tp-image="assets/images/pages/product-pages.webp" data-tp-alt="TEMPLETO contact us layouts" class="tp-autotab tp-heading">Contact Us</button>
-            <button type="button" role="tab" data-tp-autotab aria-selected="false" tabindex="-1" aria-controls="tp-pages-panel" data-tp-image="assets/images/pages/product-pages.webp" data-tp-alt="TEMPLETO checkout layouts" class="tp-autotab tp-heading">Checkout</button>
+            <button type="button" role="tab" data-tp-autotab aria-selected="false" tabindex="-1" aria-controls="tp-pages-panel" data-tp-image="assets/images/pages/checkout-pages.webp" data-tp-alt="TEMPLETO checkout layouts" class="tp-autotab tp-heading">Checkout</button>
         </div>
 
         <!-- Preview -->
@@ -833,13 +1421,13 @@
             <img src="assets/images/mobile/mobile-filter.webp" width="311" height="646" alt="Collection page with filters on mobile" loading="lazy" />
           </button>
           <button type="button" data-tp-autotab-panel aria-label="Show Mobile Home" aria-current="true" tabindex="-1" class="tp-phone is-active">
-            <img src="assets/images/mobile/mobile-home.webp" width="340" height="705" alt="City Retro home page on mobile" loading="lazy" />
+            <img src="assets/images/mobile/mobile-home.webp" width="340" height="705" alt="Marée home page on mobile" loading="lazy" />
           </button>
           <button type="button" data-tp-autotab-panel aria-label="Show Mobile Menu" aria-current="false" tabindex="-1" class="tp-phone">
             <img src="assets/images/mobile/mobile-menu.webp" width="311" height="646" alt="Mobile menu with categories" loading="lazy" />
           </button>
           <button type="button" data-tp-autotab-panel aria-label="Show Mobile Search" aria-current="false" tabindex="-1" class="tp-phone">
-            <img src="assets/images/mobile/mobile-cart.webp" width="311" height="646" alt="Mobile cart drawer with recommendations" loading="lazy" />
+            <img src="assets/images/mobile/mobile-cart.webp" width="311" height="646" alt="Shopping cart page on mobile" loading="lazy" />
           </button>
         </div>
         </div>
@@ -1135,11 +1723,12 @@
 
     <!-- Feature detail popup (filled by main.js from the clicked card) -->
     <dialog data-tp-modal class="tp-modal" aria-labelledby="tp-modal-title">
-      <div class="relative p-[clamp(24px,4.5vw,52px)]">
+      <div class="tp-modal-body relative p-[clamp(24px,4.5vw,52px)]">
         <button type="button" data-tp-modal-close class="tp-feature-plus absolute right-4 top-4 z-10 rotate-45 cursor-pointer hover:border-lime hover:text-lime sm:right-6 sm:top-6" aria-label="Close">
           <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
         </button>
 
+        <div class="tp-modal-copy">
         <h3 id="tp-modal-title" data-tp-modal-title class="tp-subtitle pr-12 text-white">Feature</h3>
         <p data-tp-modal-text class="tp-lead mt-5 text-white/85"></p>
 
@@ -1147,9 +1736,10 @@
           <a href="#" class="tp-btn-text tp-link-underline text-white">How to use it</a>
           <a href="#" class="tp-btn-text bg-btn-gradient inline-flex rounded-full px-8 py-3.5 font-medium text-ink shadow-[0_0_30px_-6px_rgba(100,219,158,.6)] transition hover:-translate-y-0.5">Buy Theme $30</a>
         </div>
+        </div>
 
         <div class="tp-modal-media mt-10 flex min-h-[220px] items-center justify-center overflow-hidden rounded-xl border border-white/12 bg-black/35 p-5 sm:p-8">
-          <img data-tp-modal-img src="assets/images/features/exit-intent.webp" width="529" height="431" alt="" class="block h-auto max-h-[56vh] w-auto max-w-full object-contain" />
+          <img data-tp-modal-img src="assets/images/features/exit-intent.webp" width="529" height="431" alt="" class="tp-modal-img block h-auto max-h-[56vh] w-auto max-w-full object-contain" />
         </div>
       </div>
     </dialog>
